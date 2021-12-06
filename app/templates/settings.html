@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>Настройки</center>
+<center>
+    <table border="1">
+        <tr>
+            <td>Ключ</td>
+            <td>Значение</td>
+            <td>Описание</td>
+        </tr>
+        {% for c in config %}
+        <tr>
+            <td> {{ c.key }} </td>
+            <td> {{ c.val }} </td>
+            <td> {{ c.comment }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+<hr>
+<center>
+    Добавить ключ
+</center>
+<center>
+    <form action="" method="post"  novalidate>
+    <table>
+        <tr>
+            <td>
+                {{ form.key.label }}
+            </td>
+            <td>
+                {{ form.key }}
+            </td>
+            <td>
+                {{ form.value.label }}
+            </td>
+            <td>
+                {{ form.value }}
+            </td>
+            <td>
+                {{ form.comment.label }}
+            </td>
+            <td>
+                {{ form.comment }}
+            </td>
+            <td>{{ form.submit }} </td>
+        </tr>
+    </table>
+    </form>
+</center>
+{% endblock %}

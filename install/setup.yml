@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: upgrade all packages
+      apt: name = "*" state=latest
+
+    - name: install nginx
+      apt: name="nginx" state=latest
+
+    - name: create programm dir
+      file: path=/opt/myMajordomGPIO state=directory owner=nginx group=nginx mode=0700
