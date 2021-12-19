@@ -1,8 +1,9 @@
-class GPIO(object):
+DEFAULT_PIN_NAME = "DFP"
+DEFAULT_PIN_DESC = "DESC"
+
+class GPIO:
     pins = {}
     def __init__(self, count):
-        DEFAULT_PIN_NAME="DFP"
-        DEFAULT_PIN_DESC="DESC"
         for i in range(count):
             self.pins[i+1] = {'pin': DEFAULT_PIN_NAME, 'desc': DEFAULT_PIN_DESC }
 
