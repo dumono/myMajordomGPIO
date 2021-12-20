@@ -1,9 +1,9 @@
-from app import app, db
+from webapp import app, db
 
 from flask import render_template, flash, redirect, url_for, request
-from app.forms import LoginForm, SettingsForm
+from webapp.forms import LoginForm, SettingsForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, GlobalConf
+from webapp.models import User, GlobalConf
 from werkzeug.urls import url_parse
 
 
@@ -51,6 +51,16 @@ def settings():
         config =db.session.query(GlobalConf).all()
     return render_template('settings.html', title='Настройки', form=form, config=config)
 
+@app.route("/update", methods=["POST"])
+def update():
+    updatekey = request.form.get("updatedkey")
+    updatedval = request.form.get("updatedval")
+    updatedcomm = request.form.get("updatedcomm")
+    conf = GlobalConf.query.filter_by(key=updatekey).first()
+    conf.val = updatedval
+    conf.comment = updatedcomm
+    db.session.commit()
+    return redirect("/settings")
 
 @app.route('/gpio_types', methods=['GET', 'POST'])
 @login_required
