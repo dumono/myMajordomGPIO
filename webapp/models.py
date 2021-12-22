@@ -1,4 +1,4 @@
-from app import db, login
+from webapp import db, login
 
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,8 +39,8 @@ class GPIO_connect(db.Model):
     comment = db.Column(db.String(120))
 
 class GlobalConf(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    key = db.Column(db.String(128), index=True, unique=True)
+#    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(128), index=True, primary_key=True)
     val = db.Column(db.String(128))
     comment = db.Column(db.String(128))
 

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 641e1abcf334
+Revision ID: 7be8308156dc
 Revises: 
-Create Date: 2021-12-06 13:02:31.171011
+Create Date: 2021-12-20 19:46:31.765938
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '641e1abcf334'
+revision = '7be8308156dc'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,13 +34,12 @@ def upgrade():
     )
     op.create_index(op.f('ix_GPIO_connect_name'), 'GPIO_connect', ['name'], unique=True)
     op.create_table('global_conf',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('key', sa.String(length=128), nullable=True),
+    sa.Column('key', sa.String(length=128), nullable=False),
     sa.Column('val', sa.String(length=128), nullable=True),
     sa.Column('comment', sa.String(length=128), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('key')
     )
-    op.create_index(op.f('ix_global_conf_key'), 'global_conf', ['key'], unique=True)
+    op.create_index(op.f('ix_global_conf_key'), 'global_conf', ['key'], unique=False)
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=64), nullable=True),

@@ -1,14 +1,14 @@
 '''from flask import Flask
 
-app = Flask(__name__)
+webapp = Flask(__name__)
 
 
-@app.route('/')
+@webapp.route('/')
 def hello_world():
     return 'Hello World'
 '''
 
-from app import app
+from webapp import app
 
 if __name__ == '__main__':
     app.run()

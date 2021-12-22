@@ -9,7 +9,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class SettingsForm(FlaskForm):
-    key = StringField('Ключ',validators=[DataRequired()])
-    value = StringField('Значение',validators=[DataRequired()])
-    comment = StringField('Описание',validators=[DataRequired()])
+    key = StringField('Ключ', validators=[DataRequired()])
+    value = StringField('Значение', validators=[DataRequired()])
+    comment = StringField('Описание', validators=[DataRequired()])
     submit = SubmitField('Изменить')

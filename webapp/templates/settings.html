@@ -11,9 +11,12 @@
         </tr>
         {% for c in config %}
         <tr>
-            <td> {{ c.key }} </td>
-            <td> {{ c.val }} </td>
-            <td> {{ c.comment }} </td>
+          <form method="POST" action="./update">
+            <td> {{ c.key }} <input type="hidden" value="{{c.key}}" name="updatedkey"></td>
+            <td><input type="text" value="{{ c.val }}" name="updatedval"></td>
+            <td><input type="text" value="{{ c.comment }}" name="updatedcomm"></td>
+            <td><input type="submit" value="Update"></td>
+          </form>
         </tr>
         {% endfor %}
     </table>
