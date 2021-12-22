@@ -1,0 +1,1 @@
+CONF_SECRET_KEY = 'kcndjicnduihn9un98runvf'
