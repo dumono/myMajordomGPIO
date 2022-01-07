@@ -33,10 +33,11 @@ class Post(db.Model):
         return '<Post {}>'.format(self.body)
 
 class GPIO_connect(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
-    GPIO_NUM= db.Column(db.Integer, unique=True)
-    comment = db.Column(db.String(120))
+#    id = db.Column(db.Integer, primary_key=True)
+    gpio_type = db.Column(db.String(64))
+    gpio_num= db.Column(db.Integer, primary_key=True)
+#    comment = db.Column(db.String(120))
+
 
 class GlobalConf(db.Model):
 #    id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +48,8 @@ class GlobalConf(db.Model):
     def __repr__(self):
         return f'{self.key} {self.val} {self.comment}'
 
-class GPIO_Types(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    gpioType = db.Column(db.String(16), index=True, unique=True)
+class GPIOTypes(db.Model):
+    gpioType = db.Column(db.String(16), index=True, primary_key=True)
+
+    def __repr__(self):
+        return self.gpioType
