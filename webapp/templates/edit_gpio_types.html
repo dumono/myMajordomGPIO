@@ -9,11 +9,7 @@
         </tr>
         {% for tp in gpio_TP %}
         <tr>
-          <form method="POST" action="./update_gpio_types">
             <td><input type="text" value="{{ tp.gpioType }}" name="updatedtp"></td>
-            <td><input type="submit" value="Update"></td>
-              <td><input type="submit" value="Delete"></td>
-          </form>
         </tr>
         {% endfor %}
     </table>

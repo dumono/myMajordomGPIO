@@ -1,9 +1,9 @@
 from webapp import app, db
 
 from flask import render_template, flash, redirect, url_for, request
-from webapp.forms import LoginForm, SettingsForm, GPIOTypesForm
+from webapp.forms import LoginForm, SettingsForm, GPIOTypesForm, GPIORulesForm
 from flask_login import current_user, login_user, logout_user, login_required
-from webapp.models import User, GlobalConf, GPIOTypes, GPIO_connect
+from webapp.models import User, GlobalConf, GPIOTypes, GPIO_connect, GpioRules
 from werkzeug.urls import url_parse
 
 
@@ -55,6 +55,7 @@ def settings():
         config = db.session.query(GlobalConf).all()
     return render_template('settings.html', title='Настройки', form=form, config=config)
 
+@login_required
 @app.route("/update", methods=["POST"])
 def update():
     updatekey = request.form.get("updatedkey")
@@ -80,6 +81,8 @@ def edit_gpio_types():
         gpio_TP = db.session.query(GPIOTypes).all()
     return render_template("edit_gpio_types.html", gpio_TP=gpio_TP, form=form )
 
+
+@login_required
 @app.route("/gpio_uptd", methods=["POST"])
 def gpio_uptd():
     gpio_type = request.form.get("gpio_type")
@@ -110,3 +113,18 @@ def edit_gpio():
 #    print(gpc)
 #    print(gpio_TP)
     return render_template('edit_GPIO.html', gpio_TP=gpio_TP, gpc=gpc)
+
+@app.route('/edit_gpio_rules', methods=['GET','POST'])
+@login_required
+def edit_gpio_rules():
+    rules = db.session.query(GpioRules).all()
+    form = GPIORulesForm()
+    if request.method == 'POST':
+        rule = GpioRules(signal_pin=form.signal_pin.data, signal_type=form.signal_type.data,
+                         condition=form.condition.data, condition_value=form.condition_value.data,
+                         action_type=form.action_type.data, action_pin=form.action_pin.data)
+        db.session.add(rule)
+        db.session.commit()
+        flash('Значение добавлено')
+        return redirect(url_for('edit_gpio_types'))
+    return render_template('edit_rules.html', rules=rules, form=form)
