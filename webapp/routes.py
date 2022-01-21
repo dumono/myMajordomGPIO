@@ -126,5 +126,15 @@ def edit_gpio_rules():
         db.session.add(rule)
         db.session.commit()
         flash('Значение добавлено')
-        return redirect(url_for('edit_gpio_types'))
+        return redirect(url_for('edit_gpio_rules'))
     return render_template('edit_rules.html', rules=rules, form=form)
+
+
+@app.route("/delete_rule", methods=["POST"])
+@login_required
+def delete_rule():
+    rule_id = request.form.get("deletekey")
+    db.session.query(GpioRules).filter(GpioRules.id == rule_id).delete()
+    db.session.commit()
+    flash('Правило удалено')
+    return redirect(url_for('edit_gpio_rules'))

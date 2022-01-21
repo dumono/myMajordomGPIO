@@ -12,16 +12,22 @@
             <td>Тип действия</td>
             <td>ActionPin</td>
         </tr>
-        <tr>
+
             {% for rule in rules %}
-            <td>rule.signal_pin</td>
-            <td>rule.signal_type</td>
-            <td>rule.condition</td>
-            <td>rule.condition_value</td>
-            <td>rule.action_type</td>
-            <td>rule.action_pin</td>
-            {% endfor %}
+        <tr>
+            <form method="POST" action="./delete_rule">
+            <input type="hidden" value="{{rule.id}}" name="deletekey">
+            <td>{{ rule.signal_pin }}</td>
+            <td>{{ rule.signal_type }}</td>
+            <td>{{ rule.condition }}</td>
+            <td>{{ rule.condition_value }}</td>
+            <td>{{ rule.action_type }}</td>
+            <td>{{ rule.action_pin }}</td>
+            <td><input type="submit" value="Удалить"></td>
+            </form>
         </tr>
+            {% endfor %}
+
     </table>
 </center>
 <hr>
