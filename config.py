@@ -10,3 +10,4 @@ class Config(object):
     # SECRET_KEY = os.environ.get('SECRET_KEY') or secret.CONF_SECRET_KEY
     SECRET_KEY = os.urandom(32)
     WTF_CSRF_SECRET_KEY = "a csrf secret key"
+    REDIS_SERVER="172.24.234.15"
