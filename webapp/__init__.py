@@ -17,9 +17,9 @@ login.login_view = 'login'
 login.login_message = "Пожалуйста, войдите, чтобы открыть эту страницу."
 
 bootstrap = Bootstrap(app)
+
 from webapp import routes
 from webapp.models import User, GPIO_connect, GPIOTypes
-
 
 def create_default():
     if not User.query.first():

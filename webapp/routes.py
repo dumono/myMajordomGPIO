@@ -13,10 +13,14 @@ from werkzeug.urls import url_parse
 def index():
     gpc = []
     gpc1 = db.session.query(GPIO_connect.gpio_type).all()
+    gpcv = []
     for i in gpc1:
         for j in i:
             gpc.append(j)
-    return render_template('index.html', title='Home', gpc=gpc)
+    for i in db.session.query(GPIO_connect.val).all():
+        for j in i:
+            gpcv.append(j)
+    return render_template('index.html', title='Home', gpc=gpc, gpcv=gpcv)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
