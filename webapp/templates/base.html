@@ -2,9 +2,9 @@
 <html>
     <head>
         {% if title %}
-        <title>{{ title }} - microblog</title>
+        <title>{{ title }}</title>
         {% else %}
-        <title>microblog</title>
+        <title>myMajordom</title>
         {% endif %}
     </head>
     <body>
@@ -12,6 +12,7 @@
         Raspberry PI:
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('settings') }}">Настройки</a>
+        <a href="{{ url_for('edit_gpio') }}">Редактор пинов</a>
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
         {% else %}

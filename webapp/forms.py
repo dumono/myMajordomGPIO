@@ -12,4 +12,13 @@ class SettingsForm(FlaskForm):
     key = StringField('Ключ', validators=[DataRequired()])
     value = StringField('Значение', validators=[DataRequired()])
     comment = StringField('Описание', validators=[DataRequired()])
-    submit = SubmitField('Изменить')
+    submit = SubmitField('Добавить')
+
+class GPIOTypesForm(FlaskForm):
+    value = StringField('Тип', validators=[DataRequired()])
+    submit = SubmitField('Добавить')
+
+class GPIOEdit(FlaskForm):
+    value = StringField('Тип', validators=[DataRequired()])
+
+    submit = SubmitField('Добавить')
