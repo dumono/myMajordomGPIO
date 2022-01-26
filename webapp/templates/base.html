@@ -13,6 +13,7 @@
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('settings') }}">Настройки</a>
         <a href="{{ url_for('edit_gpio') }}">Редактор пинов</a>
+        <a href="{{ url_for('edit_gpio_rules') }}">Редактор правил</a>
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
         {% else %}

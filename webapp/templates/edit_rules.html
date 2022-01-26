@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>Редактор правил</center>
+<center>
+    <table border="1">
+        <tr>
+            <td>SygnalPin</td>
+            <td>Тип устройства</td>
+            <td>Тип условия</td>
+            <td>Условие</td>
+            <td>Тип действия</td>
+            <td>ActionPin</td>
+        </tr>
+
+            {% for rule in rules %}
+        <tr>
+            <form method="POST" action="./delete_rule">
+            <input type="hidden" value="{{rule.id}}" name="deletekey">
+            <td>{{ rule.signal_pin }}</td>
+            <td>{{ rule.signal_type }}</td>
+            <td>{{ rule.condition }}</td>
+            <td>{{ rule.condition_value }}</td>
+            <td>{{ rule.action_type }}</td>
+            <td>{{ rule.action_pin }}</td>
+            <td><input type="submit" value="Удалить"></td>
+            </form>
+        </tr>
+            {% endfor %}
+
+    </table>
+</center>
+<hr>
+<center>
+    Добавить правило
+</center>
+<center>
+    <form action="" method="post"  novalidate>
+    <table>
+        <tr>
+            <td>
+                {{ form.signal_pin.label }}
+            </td>
+            <td>
+                {{ form.signal_pin }}
+            </td>
+            <td>
+                {{ form.signal_type.label }}
+            </td>
+            <td>
+                {{ form.signal_type }}
+            </td>
+            <td>
+                {{ form.condition.label }}
+            </td>
+            <td>
+                {{ form.condition }}
+            </td>
+            <td>
+                {{ form.condition_value.label }}
+            </td>
+            <td>
+                {{ form.condition_value }}
+            </td>
+            <td>
+                {{ form.action_type.label }}
+            </td>
+            <td>
+                {{ form.action_type }}
+            </td>
+            <td>
+                {{ form.action_pin.label }}
+            </td>
+            <td>
+                {{ form.action_pin }}
+            </td>
+            <td>{{ form.submit }} </td>
+        </tr>
+    </table>
+    </form>
+</center>
+{% endblock %}

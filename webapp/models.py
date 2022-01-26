@@ -35,7 +35,7 @@ class Post(db.Model):
 class GPIO_connect(db.Model):
 #    id = db.Column(db.Integer, primary_key=True)
     gpio_type = db.Column(db.String(64))
-    gpio_num= db.Column(db.Integer, primary_key=True)
+    gpio_num = db.Column(db.Integer, primary_key=True)
 #    comment = db.Column(db.String(120))
 
 
@@ -53,3 +53,12 @@ class GPIOTypes(db.Model):
 
     def __repr__(self):
         return self.gpioType
+
+class GpioRules(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    signal_pin = db.Column(db.Integer)
+    signal_type = db.Column(db.String(16))
+    condition = db.Column(db.String(3))
+    condition_value = db.Column(db.String(10))
+    action_type = db.Column(db.String(10))
+    action_pin = db.Column(db.Integer)
