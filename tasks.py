@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 import platform
 
 
+
 def verify_platform():
     if platform.node() == 'raspberrypi':
         return True
@@ -22,6 +23,13 @@ celery_app = Celery('tasks', broker='redis://' + redis_addr + ':6379/0')
 
 GPIO.setmode(GPIO.BOARD)
 
+def is_int(i):
+    try:
+        a = int(i)
+    except Exception:
+        return False
+    return True
+
 def config_pin(pin, pin_type):
     if pin_type == 'GPIO_IN':
         GPIO.setup(pin, GPIO.IN)
@@ -36,7 +44,7 @@ def get_pin_value(pin, pin_type, rec = False):
                 return temperature
             else:
                 return 'ERR'
-        elif pin_type == 'GPIO_IN':
+        elif pin_type == 'GPIO_IN' or pin_type == 'GPIO_OUT':
             try:
                 if GPIO.input(pin) == GPIO.HIGH:
                     return 1
@@ -48,20 +56,27 @@ def get_pin_value(pin, pin_type, rec = False):
                 else:
                     config_pin(pin, pin_type)
                     get_pin_value(pin, pin_type, True)
-        elif pin_type == 'GPIO_OUT':
-            try:
-                if GPIO.output(pin) == GPIO.HIGH:
-                    return 1
-                else:
-                    return 0
-            except RuntimeError:
-                if rec:
-                    return 'NoCNF'
-                else:
-                    config_pin(pin, pin_type)
-                    get_pin_value(pin, pin_type, True)
     else:
         return 'NoCNF'
+
+def set_pin_value(pin, val, rec=False):
+    gpc = GPIO_connect.query.filter_by(gpio_num=pin).first()
+    if gpc.gpio_type == 'GPIO_OUT':
+        try:
+            if val == 'on':
+                GPIO.output(pin, GPIO.HIGH)
+                gpc.val = 1
+            elif val == 'off':
+                GPIO.output(pin, GPIO.LOW)
+                gpc.val = 0
+            db.session.commit()
+        except RuntimeError:
+            if rec:
+                return 'NoCNF'
+            else:
+                config_pin(pin, 'GPIO_OUT')
+                set_pin_value(pin, val, True)
+
 
 
 @celery_app.task
@@ -91,18 +106,22 @@ def check_rules():
         action_type = rule.action_type
         action_pin = rule.action_pin
         signal_pin_value = get_pin_value(signal_pin, signal_type)
-        if condition == 'min':
-            if signal_pin_value < condition_value:
-                pass
-        elif condition == 'max':
-            if signal_pin_value > condition_value:
-                pass
-        elif condition == 'eq':
-            if signal_pin_value == condition_value:
-                pass
+        if is_int(condition_value) and is_int(signal_pin_value):
+            signal_pin_value = int(signal_pin_value)
+            condition_value = int(condition_value)
+            if condition == 'min':
+                if signal_pin_value < condition_value:
+                    set_pin_value(action_pin, action_type)
+            elif condition == 'max':
+                if signal_pin_value > condition_value:
+                    set_pin_value(action_pin, action_type)
+            elif condition == 'eq':
+                if signal_pin_value == condition_value:
+                    set_pin_value(action_pin, action_type)
 
 
 @celery_app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # sender.add_periodic_task(crontab(minute='*/1'), update_gpio_values.s())
     sender.add_periodic_task(10, update_gpio_values.s(), )
+    sender.add_periodic_task(10, check_rules.s(), )
