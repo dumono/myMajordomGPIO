@@ -3,7 +3,7 @@ from celery.schedules import crontab
 from webapp.models import GPIO_connect, GpioRules
 from config import Config
 from webapp import db
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import platform
 
 
@@ -20,11 +20,12 @@ if verify_platform():
 redis_addr = Config.REDIS_SERVER
 celery_app = Celery('tasks', broker='redis://' + redis_addr + ':6379/0')
 
+GPIO.setmode(GPIO.BOARD)
 
 def config_pin(pin, pin_type):
     if pin_type == 'GPIO_IN':
         GPIO.setup(pin, GPIO.IN)
-    elif pin_type == 'GPIO_IN':
+    elif pin_type == 'GPIO_OUT':
         GPIO.setup(pin, GPIO.OUT)
 
 def get_pin_value(pin, pin_type, rec = False):
@@ -74,7 +75,7 @@ def update_gpio_values():
 #            print('j=', j)
             gpc_upd = GPIO_connect.query.filter_by(gpio_num=j).first()
 #            print('gpc_upd=', gpc_upd)
-            gpc_upd.val = get_pin_value(j, gpc_upd.gpio_type)
+            gpc_upd.val = get_pin_value(j, gpc_upd.gpio_type, False)
 #            print(j, gpc_upd.gpio_type)
             db.session.commit()
 
